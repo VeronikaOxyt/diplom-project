@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Список мероприятий</h2>
+    <form method="post" th:action="@{filter}">
+        <input type="text" th:name="type">
+        <button type="submit">Найти</button>
+    </form>
+    <div style="background-color: aquamarine" th:each="activity: ${allActs}">
+        <p th:text="${activity.id}">id</p>
+        <p th:text="${activity.type}">type</p>
+        <p th:text="${activity.text}">text</p>
+        <p th:text="${activity.authorName}">id</p>
+        <br>
+    </div>
+    <input type="button" value="Add" onclick="window.location.href= 'addNewActivity'"/>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</body>
+</html>
