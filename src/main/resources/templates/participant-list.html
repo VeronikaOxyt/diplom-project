@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
+    <title>Title</title>
+</head>
+<body>
+    <h2>List of users</h2>
+    <div style="background-color: aquamarine" th:each="user: ${users}">
+        <p th:text="${user.id}">id</p>
+        <p th:text="${user.username}">username</p>
+        <div th:each="role: ${user.roles}">
+            <p th:text="${role}">role</p>
+        </div>
+        <br>
+        <a th:href="@{/participant/{id}(id=${user.id})}" class="btn btn-update">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+    </div>
+</body>
+</html>

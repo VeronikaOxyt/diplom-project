@@ -1,8 +1,12 @@
 package com.oxytoca.app.entity;
 
+import com.oxytoca.registration.entity.Role;
 import com.oxytoca.registration.entity.User;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Activity {
@@ -14,6 +18,12 @@ public class Activity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
+    private String filename;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "activity_participant",
+            joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> participants = new HashSet<>();
 
     public Activity() {}
 
@@ -33,6 +43,14 @@ public class Activity {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Set<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<User> participants) {
+        this.participants = participants;
     }
 
     public Long getId() {
@@ -55,10 +73,18 @@ public class Activity {
         this.type = type;
     }
 
+
     public void setText(String text) {
         this.text = text;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
     @Override
     public String toString() {

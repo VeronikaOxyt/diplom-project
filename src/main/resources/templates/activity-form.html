@@ -6,7 +6,7 @@
 </head>
 <body>
     <form th:action="@{/saveActivity}" th:object="${activity}"
-          METHOD="post" modelAttribute="${activity}">
+          METHOD="post" modelAttribute="${activity}" enctype="multipart/form-data">
         <h2>Input activity</h2>
         <table>
             <tr>
@@ -17,6 +17,11 @@
             <tr>
                 <td><label>TEXT: </label></td>
                 <td><input type="text" th:name="text" th:value="${activity.text}"
+                           required aria-required="true"/></td>
+            </tr>
+            <tr>
+                <td><label>Фото: </label></td>
+                <td><input type="file" th:name="file"
                            required aria-required="true"/></td>
             </tr>
             <tr>

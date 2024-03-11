@@ -1,10 +1,13 @@
 package com.oxytoca.registration.entity;
 
+import com.oxytoca.app.entity.Activity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,6 +22,11 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "activity_participant",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id"))
+    private Set<Activity> myActivities = new HashSet<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id")) //user_role, user_id
@@ -111,6 +119,19 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Activity> getMyActivities() {
+        return myActivities;
+    }
+
+    public void setMyActivities(Set<Activity> myActivities) {
+        this.myActivities = myActivities;
+    }
+
+    public void removeActivity(Activity activity) {
+        this.myActivities.remove(activity);
+        activity.getParticipants().remove(this);
     }
 
     @Override

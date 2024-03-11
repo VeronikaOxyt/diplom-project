@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Список мероприятий</h2>
+    <form method="post" th:action="@{filter}">
+        <input type="text" th:name="type">
+        <button type="submit">Найти</button>
+    </form>
+    <div style="background-color: aquamarine" th:each="activity: ${allActs}">
+        <div><img th:src="@{/img/{filename}(filename = ${activity.filename})}"></div>
+        <p th:text="${activity.id}">id</p>
+        <p th:text="${activity.type}">type</p>
+        <p th:text="${activity.text}">text</p>
+        <p th:text="${activity.authorName}">authorName</p>
+        <p th:text="${activity.participants.size()}">size</p>
+        
+        
+        <a th:href="@{/join/{id}(id=${activity.id})}">Join</a>
+        <a th:href="@{/disjoin/{id}(id=${activity.id})}">Disjoin</a>
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">hello user</div>
+    <input type="button" value="Add" sec:authorize="hasRole('ROLE_REFEREE')"
+           onclick="window.location.href= 'addNewActivity'"/>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+<span><a href="/participant" sec:authorize="hasRole('ROLE_REFEREE')">Participants list</a></span>
+</body>
+</html>
