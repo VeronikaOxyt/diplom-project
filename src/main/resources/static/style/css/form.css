@@ -1,0 +1,74 @@
+body {
+    height: 85vh;
+    background-color: #e1ecfa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h2 {
+    font-family: sans-serif;
+    color: #3a414a;
+    padding-top: 20px;
+    margin: 20px;
+}
+
+form {
+    width: 420px;
+    height: 460px;
+    border-radius: 5px;
+    background-color:white;
+    box-shadow: 1px 1px 2px 0px rgba(124, 132, 143, 0.46);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+input {
+    width: 280px;
+    height: 30px;
+    border-radius: 12px;
+    border: none;
+    font-size: 110%;
+    padding: 5px;
+    background-color: #ebeef5;
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.46);
+
+}
+tr {
+    margin-bottom: 15px;
+    font-family: sans-serif;
+    color: #3a414a;
+    display: flex;
+    flex-direction: column;
+}
+tr.button {
+    justify-content: center;
+    align-items: center;
+}
+button, input[type="submit"], input[type="button"]  {
+    width: 210px;
+    height: 50px;
+    margin: 10px;
+    border: none;
+    border-radius: 20px;
+    font-size: 20px;
+    font-family: sans-serif;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    padding: 15px 32px;
+    box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.46);
+    background: linear-gradient(70deg, #6a9aec, #6aa1ea);
+}
+
+button {
+    width: 270px;
+}
+
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background: linear-gradient(70deg, #4470b2, #4574a8);
+    transition: .5s ease;
+}
