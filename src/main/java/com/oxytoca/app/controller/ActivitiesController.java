@@ -26,19 +26,19 @@ public class ActivitiesController {
     @Value("${upload.path}")
     private String uploadPath;
 
-    @GetMapping(path ="/")
+    @GetMapping("/")
     public String greeting() {
         return "greeting";
     }
 
-    @GetMapping(path ="/poster")
+    @GetMapping("/poster")
     public String poster(Model model) {
         Iterable<Activity> allActivities = activityRepository.findAll();
         model.addAttribute("allActs", allActivities);
         return "poster";
     }
 
-    @GetMapping(path ="/addNewActivity")
+    @GetMapping("/addNewActivity")
     public String addActivity(Model model) {
         Activity activity = new Activity();
         model.addAttribute("activity", activity);
@@ -66,7 +66,7 @@ public class ActivitiesController {
         activityRepository.save(activity);
         return "redirect:/poster";
     }
-    @PostMapping(path = "filter")
+    @PostMapping("filter")
     public String filterByType(@RequestParam String type, Model model) {
         Iterable<Activity> activities;
         if(type != null && !type.isEmpty()) {
@@ -79,7 +79,7 @@ public class ActivitiesController {
     }
 
 
-    @GetMapping(path ="join/{activity}")
+    @GetMapping("join/{activity}")
     public String joinActivity(@AuthenticationPrincipal User user,
                                @PathVariable Activity activity) {
         System.out.println("user id " + user.getId());
@@ -88,7 +88,7 @@ public class ActivitiesController {
 
         return "redirect:/poster";
     }
-    @GetMapping(path ="disjoin/{activity}")
+    @GetMapping("disjoin/{activity}")
     public String disjoinActivity(@AuthenticationPrincipal User user,
                                @PathVariable Activity activity) {
         System.out.println("user id " + user.getId());

@@ -1,0 +1,164 @@
+html, body {
+    font-family: "Montserrat", sans-serif;
+    background-color: aliceblue;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 5rem;
+    background-color: #6aa1ea;
+}
+.brand a {
+    padding: 8px;
+    font-weight: lighter;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #fff;
+}
+ul {
+    display: flex;
+    flex-direction: row;
+}
+
+li {
+    list-style-type: none;
+    margin-left: 3rem;
+}
+li::after {
+    content: '';
+    width: 0rem;
+    height: 0.15rem;
+    background-color: #fff;
+    display: block;
+    border-radius: 0.2rem;
+    margin: 0.2rem auto 0 auto;
+    transition: all 0.3s ease-in-out;
+}
+
+li:hover::after {
+    width: 2rem;
+}
+
+input.search {
+    width: 200px;
+    height: 30px;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+button.search {
+    background-color: #6aa1ea;
+    width: 40px;
+    height: 30px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: medium;
+}
+input.button {
+    background-color: #6aa1ea;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 30px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: medium;
+}
+span {
+    margin-top: 120px;
+}
+li span a {
+    color: white;
+    padding: 5px;
+    position: relative;
+    text-decoration: none;
+    font-size: medium;
+    text-transform: uppercase;
+}
+li span a:hover {
+    cursor: pointer;
+}
+li span a:active {
+    box-shadow: none;
+    top: 5px;
+}
+
+
+main {
+    height: 85vh;
+    display: flex;
+    justify-content: stretch;
+    flex-direction: row;
+}
+div.admin {
+    height: 25px;
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+}
+div.admin a {
+    padding-right: 10px;
+    margin: 5px;
+    color: #575c65;
+}
+.card {
+    height: 450px;
+    width: 300px;
+    background-color: white;
+    border-radius: 20px;
+    margin: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    color: #3a414a;
+}
+div.img {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+img {
+    width: 260px;
+    height: 180px;
+}
+div.data {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    color: #3a414a;
+}
+hr {
+    height: 1px;
+    background-color: #c8cbcc;
+    border: none;
+}
+div.join {
+    display: flex;
+    padding: 10px;
+    justify-content:space-between;
+    flex-direction: row;
+    color: rgba(79, 82, 87, 0.87);
+}
+div.join a {
+    text-decoration: none;
+    color: rgba(79, 82, 87, 0.87);
+    padding-left: 20px;
+    border-left: solid 1px #c8cbcc;
+}
+div.join a:hover {
+    color: #3a414a;
+}
