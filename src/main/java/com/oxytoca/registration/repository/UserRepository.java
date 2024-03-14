@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserById(Long id);
 
+    User findByActivationCode(String code);
+
     /*@Modifying
     @Transactional
     @Query("delete from")*/

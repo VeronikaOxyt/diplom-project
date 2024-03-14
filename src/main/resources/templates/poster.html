@@ -20,6 +20,9 @@
                                onclick="window.location.href= 'addNewActivity'"/></li>
                     <li><span><a href="/participant" sec:authorize="hasRole('ROLE_REFEREE')">Participants list</a>
                     </span></li>
+                    <li><form th:action="@{/profile}" method="post">
+                        <input class="button" type="submit" value="Профиль"/>
+                    </form></li>
                     <li><form th:action="@{/logout}" method="post">
                         <input class="button" type="submit" value="Sign Out"/>
                     </form></li>

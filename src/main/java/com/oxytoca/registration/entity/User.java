@@ -21,6 +21,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean active;
+    private String activationCode;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "activity_participant",
@@ -132,6 +133,14 @@ public class User implements UserDetails {
     public void removeActivity(Activity activity) {
         this.myActivities.remove(activity);
         activity.getParticipants().remove(this);
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     @Override

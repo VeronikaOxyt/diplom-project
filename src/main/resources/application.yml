@@ -8,6 +8,20 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  mail:
+    host: smtp.yandex.ru
+    username: veronikamenshina@yandex.ru
+    password:
+    port: 465
+    protocol: smtps
+
+mail:
+  debug: true
 
 upload:
   path: /C:/Users/nikki/Documents/uploads

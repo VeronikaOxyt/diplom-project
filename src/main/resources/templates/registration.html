@@ -11,7 +11,17 @@
     <h2>Регистрация</h2>
     <table>
         <tr>
-            <td><label>User Name : </label></td>
+            <td><label>Fullname: </label></td>
+            <td><input type="text" th:name="fullname" th:value="${user.fullname}"
+                       required aria-required="true"/></td>
+        </tr>
+        <tr>
+            <td><label>Email: </label></td>
+            <td><input type="email" th:name="email" th:value="${user.email}"
+                       required aria-required="true"/></td>
+        </tr>
+        <tr>
+            <td><label>Username: </label></td>
             <td><input type="text" th:name="username" th:value="${user.username}"
                        required aria-required="true"/></td>
         </tr>
