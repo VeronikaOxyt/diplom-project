@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style/css/activity.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style/css/style.css">
 </head>
 <body>
     <div th:fragment="navbar">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">Navbar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/poster">Activities</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               sec:authorize="hasRole('ROLE_REFEREE')" href="/participant">Participant list</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="brand"><a href="#">Доска мероприятий</a></div>
+        <nav class="navbar">
+            <ul>
+                <li><form method="post" th:action="@{filter}">
+                    <input class="search" type="text" th:name="type">
+                    <button class="search" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i></button>
+                </form></li>
+                <li><input class="button" type="button" value="Add" sec:authorize="hasRole('ROLE_REFEREE')"
+                           onclick="window.location.href= 'addNewActivity'"/></li>
+                <li><span><a href="/participant" sec:authorize="hasRole('ROLE_REFEREE')">Participants list</a>
+                        </span></li>
+                <li><a href="/poster">Мероприятия</a></li>
+                <li><form th:action="@{/profile}" method="get">
+                    <input class="button" type="submit" value="Профиль"/>
+                </form></li>
+                <li><form th:action="@{/logout}" method="post">
+                    <input class="button" type="submit" value="Sign Out"/>
+                </form></li>
+            </ul>
         </nav>
     </div>
 
-
-    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
 </body>
 </html>

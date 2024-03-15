@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 
-@Transactional
+
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
@@ -15,7 +15,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByActivationCode(String code);
 
-    /*@Modifying
-    @Transactional
-    @Query("delete from")*/
 }

@@ -30,7 +30,7 @@ public class User implements UserDetails {
     private Set<Activity> myActivities = new HashSet<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id")) //user_role, user_id
+    @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 

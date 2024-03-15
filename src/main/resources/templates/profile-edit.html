@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style/css/form.css">
+    <title>Title</title>
+</head>
+<body>
+    <main>
+        <form th:action="@{/saveProfile}" method="post">
+            <h2>Изменить профиль</h2>
+            <table>
+                <tr>
+                    <td><label>Email: </label></td>
+                    <td><input type="email" th:name="email" th:value="${user.email}"/></td>
+                </tr>
+                <tr>
+                    <td><label>Username: </label></td>
+                    <td><input type="text" th:name="username" th:value="${user.username}"/></td>
+                </tr>
+                <tr>
+                    <td><label>Password: </label></td>
+                    <td><input type="password" th:name="password" th:value="${user.password}"/></td>
+                </tr>
+                <tr>
+                    <td><button type="submit">Сохранить</button></td>
+                </tr>
+            </table>
+        </form>
+    </main>
+</body>
+</html>

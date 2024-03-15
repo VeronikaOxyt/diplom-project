@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style/css/activity.css">
+    <link rel="stylesheet" href="/static/style/css/profile.css">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+    <header>
+        <div th:insert="parts/layout :: navbar"></div>
+    </header>
+    <main>
+        <div class="profile">
+            <p>Ваш профиль</p>
+            <pre>
+                <a href="/editProfile">(изменить <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>)</a>
+        </div>
+        <hr>
+        <div th:object="${user}">
+            <table>
+                <tr>
+                    <td><label>Полное имя:</label></td>
+                    <td><p th:text="${user.fullname}">fullname</p></td>
+                </tr>
+                <tr>
+                    <td><label>Имя пользователя:</label></td>
+                    <td><p th:text="${user.username}">username</p></td>
+                </tr>
+                <tr>
+                    <td><label>Email:</label></td>
+                    <td><p th:text="${user.email}">email</p></td>
+                </tr>
+            </table>
+        </div>
+    </main>
 </body>
 </html>

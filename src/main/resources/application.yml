@@ -4,9 +4,11 @@ spring:
     username: oxyt
     password: 123
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
     open-in-view: false
     properties:
       hibernate:
@@ -16,7 +18,7 @@ spring:
   mail:
     host: smtp.yandex.ru
     username: veronikamenshina@yandex.ru
-    password:
+    password: uudwssazfqmhwooh
     port: 465
     protocol: smtps
 
