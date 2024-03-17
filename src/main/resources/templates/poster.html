@@ -11,13 +11,20 @@
     <div th:insert="parts/layout :: navbar"></div>
 </header>
     <main>
-        <div class="card" th:each="activity: ${allActs}">
-            <div class="admin">
-                <a><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
-                <a><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
-
+        <div class="card" th:object="${user}" th:each="activity: ${allActs}">
+            <div class="admin" th:if="${user == activity.author}">
+                <a th:href="@{/activity/{id}(id=${activity.id})}">
+                    <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                </a>
+                <a th:href="@{/delete/{id}(id=${activity.id})}">
+                    <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                </a>
             </div>
-            <div class="data"><div class="img"><img th:src="@{/img/{filename}(filename = ${activity.filename})}"></div>
+            <div class="data">
+                <div class="img">
+                    <img th:src="@{/img/{filename}(filename = ${activity.filename})}">
+                </div>
+
                 <p th:text="${activity.authorName}">authorName</p>
                 <p th:text="${activity.type}">type</p>
                 <p th:text="${activity.text}">text</p>

@@ -1,15 +1,16 @@
-package com.oxytoca.registration.service;
+package com.oxytoca.app.service;
 
 import com.oxytoca.app.entity.Activity;
 import com.oxytoca.app.repository.ActivityRepository;
-import com.oxytoca.registration.entity.Role;
-import com.oxytoca.registration.entity.User;
-import com.oxytoca.registration.repository.UserRepository;
+import com.oxytoca.app.entity.Role;
+import com.oxytoca.app.entity.User;
+import com.oxytoca.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -28,6 +29,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     MailSendingService mailSendingService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
@@ -37,17 +41,20 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findUserById(userId);
         user.getMyActivities().add(activity);
         userRepository.save(user);
+        sendJoinNotice(activity.getAuthor());
     }
     @Transactional
-    public void disjoinActivity(Long userId, Activity activity) {
+    public void disjoinActivity(Long userId, Long activityId) {
         User user = userRepository.findUserById(userId);
+        Activity activity = activityRepository.findActivityById(activityId);
+
         user.getMyActivities().remove(activity);
         user.removeActivity(activity);
         userRepository.save(user);
 
-        Activity activity1 = activityRepository.findActivityById(activity.getId());
-        activity1.getParticipants().remove(user);
-        activityRepository.save(activity1);
+        activity.getParticipants().remove(user);
+        activityRepository.save(activity);
+        //sendDisjoinNotice(activity.getAuthor());
     }
 
     public boolean addNewUser(User user) {
@@ -59,62 +66,63 @@ public class UserService implements UserDetailsService {
         }
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.ROLE_USER));
-        user.setActivationCode(UUID.randomUUID().toString());
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
-        sendMessage(user);
         return true;
     }
 
-    private void sendMessage(User user) {
+
+    private void sendJoinNotice(User user) {
         if (!user.getEmail().isEmpty()) {
-            String message = String.format("Hello, %s! \n" +
-                            "Welcome to My Diplom App! " +
-                            "Please, click on the link: " +
-                            "http://localhost:8080/activate/%s",
-                    user.getUsername(), user.getActivationCode());
+            String message = String.format("Привет, %s! \n" +
+                            "Еще один пользователь записался на твое мероприятие" +
+                            "К списку твоих мероприятий: " +
+                            "http://localhost:8080/authorsActivities",
+                    user.getUsername());
 
             mailSendingService.sendMail(user.getEmail(),
-                    "Activation code", message);
+                    "Join to the activity", message);
         }
     }
 
-    public boolean activateUser(String code) {
-        User user = userRepository.findByActivationCode(code);
+    private void sendDisjoinNotice(User user) {
+        if (!user.getEmail().isEmpty()) {
+            String message = String.format("Привет, %s! \n" +
+                            "Один из пользователей отписался от твоего мероприятия" +
+                            "К списку твоих мероприятий: " +
+                            "http://localhost:8080/authorsActivities",
+                    user.getUsername());
 
-        if (user == null) {
-            return false;
+            mailSendingService.sendMail(user.getEmail(),
+                    "Join to the activity", message);
         }
-        user.setActivationCode(null);
-        userRepository.save(user);
-
-        return true;
     }
+
 
     public void updateProfile(User user, String email,
                               String username, String password) {
         String userEmail = user.getEmail();
 
-        boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
-                (userEmail != null && !userEmail.equals(email));
+        boolean isEmailChanged = !email.equals(userEmail);
+
+        boolean isPasswordChanged = !password.equals(user.getPassword());
 
         if(isEmailChanged) {
             user.setEmail(email);
-            if (!StringUtils.isEmpty(email)) {
-                user.setActivationCode(UUID.randomUUID().toString());
-            }
         }
 
         if (!StringUtils.isEmpty(username)) {
-            user.setPassword(username);
+            user.setUsername(username);
         }
 
-        if (!StringUtils.isEmpty(password)) {
-            user.setPassword(password);
+        if (!StringUtils.isEmpty(password) && isPasswordChanged) {
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         userRepository.save(user);
-        if (isEmailChanged) {
-            sendMessage(user);
-        }
     }
+
+
 }

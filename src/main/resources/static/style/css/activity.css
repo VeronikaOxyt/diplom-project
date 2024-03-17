@@ -102,6 +102,7 @@ main {
     display: flex;
     justify-content: stretch;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 div.admin {
     height: 25px;
@@ -161,4 +162,11 @@ div.join a {
 }
 div.join a:hover {
     color: #3a414a;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-size: medium;
+
 }

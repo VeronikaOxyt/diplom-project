@@ -24,7 +24,7 @@ form {
     flex-direction: column;
 }
 
-input {
+input, select {
     width: 280px;
     height: 30px;
     border-radius: 12px;
@@ -36,20 +36,27 @@ input {
 
 }
 tr {
-    margin-bottom: 15px;
+    margin-top: 15px;
     font-family: sans-serif;
     color: #3a414a;
     display: flex;
     flex-direction: column;
 }
+tr.error {
+    margin-top: 1px;
+    padding: 0;
+}
+tr.error p {
+    color: #c91111;
+}
 tr.button {
     justify-content: center;
     align-items: center;
 }
-button, input[type="submit"], input[type="button"]  {
+button, a.btn, input[type="submit"], input[type="button"]  {
     width: 210px;
     height: 50px;
-    margin: 10px;
+    margin: 15px;
     border: none;
     border-radius: 20px;
     font-size: 20px;
@@ -63,10 +70,17 @@ button, input[type="submit"], input[type="button"]  {
     background: linear-gradient(70deg, #6a9aec, #6aa1ea);
 }
 
-button {
+button, a.btn {
     width: 270px;
 }
-
+a.btn {
+    width: 570px;
+    padding-left: 107px;
+    padding-right: 107px;
+}
+tr.back {
+     margin-bottom: 30px;
+ }
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     background: linear-gradient(70deg, #4470b2, #4574a8);
     transition: .5s ease;

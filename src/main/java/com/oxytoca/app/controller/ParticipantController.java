@@ -1,8 +1,8 @@
 package com.oxytoca.app.controller;
 
-import com.oxytoca.registration.entity.Role;
-import com.oxytoca.registration.entity.User;
-import com.oxytoca.registration.repository.UserRepository;
+import com.oxytoca.app.entity.Role;
+import com.oxytoca.app.entity.User;
+import com.oxytoca.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/participant")
-@PreAuthorize("hasAuthority('ROLE_REFEREE')")
+@PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
 public class ParticipantController {
     @Autowired
     private UserRepository userRepository;

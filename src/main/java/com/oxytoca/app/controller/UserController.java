@@ -1,7 +1,7 @@
 package com.oxytoca.app.controller;
 
-import com.oxytoca.registration.entity.User;
-import com.oxytoca.registration.service.UserService;
+import com.oxytoca.app.entity.User;
+import com.oxytoca.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -33,8 +33,11 @@ public class UserController {
                                 @RequestParam String email,
                                 @RequestParam String username,
                                 @RequestParam String password) {
-        userService.updateProfile(user, email,
-                username, password);
-        return "redirect:/profile";
+        if (!(email.isEmpty() && username.isEmpty() && password.isEmpty())) {
+            userService.updateProfile(user, email,
+                    username, password);
+            return "redirect:/profile";
+        }
+        return "profile-edit";
     }
 }

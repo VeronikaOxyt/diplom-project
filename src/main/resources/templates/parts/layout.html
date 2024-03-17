@@ -16,16 +16,22 @@
                     <button class="search" type="submit">
                         <i class="fa fa-search" aria-hidden="true"></i></button>
                 </form></li>
-                <li><input class="button" type="button" value="Add" sec:authorize="hasRole('ROLE_REFEREE')"
-                           onclick="window.location.href= 'addNewActivity'"/></li>
-                <li><span><a href="/participant" sec:authorize="hasRole('ROLE_REFEREE')">Participants list</a>
-                        </span></li>
+                <li><a href="/addNewActivity"
+                       sec:authorize="hasRole('ROLE_REFEREE')">Создать</a></li>
+                <li><a href="/addNewActivity"
+                       sec:authorize="hasRole('ROLE_INSTRUCTOR')">Создать</a></li>
                 <li><a href="/poster">Мероприятия</a></li>
-                <li><form th:action="@{/profile}" method="get">
-                    <input class="button" type="submit" value="Профиль"/>
+                <li><a href="/profile">Профиль</a></li>
+                <li><a href="/authorsActivities"
+                       sec:authorize="hasRole('ROLE_REFEREE')">Провожу</a></li>
+
+                <li><form th:action="@{/authorsActivities}" method="get"
+                          sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                    <input class="button" type="submit" value="Провожу"/>
                 </form></li>
+                <li><a href="/joiningActivities">Участвую</a></li>
                 <li><form th:action="@{/logout}" method="post">
-                    <input class="button" type="submit" value="Sign Out"/>
+                    <input class="button" type="submit" value="Выйти"/>
                 </form></li>
             </ul>
         </nav>

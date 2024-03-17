@@ -1,4 +1,4 @@
-package com.oxytoca.registration.entity;
+package com.oxytoca.app.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 

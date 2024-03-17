@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/style/css/form.css">
@@ -7,27 +7,39 @@
 </head>
 <body>
     <main>
-        <form th:action="@{/saveActivity}" th:object="${activity}"
+        <form th:action="@{/saveNewActivity}" th:object="${activity}"
               METHOD="post" modelAttribute="${activity}" enctype="multipart/form-data">
             <h2>Input activity</h2>
             <table>
                 <tr>
-                    <td><label>Type: </label></td>
-                    <td><input type="text" th:name="type" th:value="${activity.type}"
-                               required aria-required="true"/></td>
+                    <td><label>Tип мероприятия: </label></td>
+                    <td><select name="type" id="type-select">
+                        <option value="tournament"
+                                sec:authorize="hasRole('ROLE_REFEREE')">Турнир</option>
+                        <option value="departure"
+                                sec:authorize="hasRole('ROLE_INSTRUCTOR')">Выезд</option>
+                        <option value="master-class">Мастер-класс</option>
+                    </select></td>
+                </tr>
+                <tr class="error" th:if="${errors != null}">
+                    <td><p th:text="${errors.get('typeError')}">typeError</p></td>
                 </tr>
                 <tr>
                     <td><label>TEXT: </label></td>
-                    <td><input type="text" th:name="text" th:value="${activity.text}"
-                               required aria-required="true"/></td>
+                    <td><input type="text" th:name="text" th:value="${activity.text}"/></td>
+                </tr>
+                <tr class="error" th:if="${errors != null}">
+                    <td><p th:text="${errors.get('textError')}">textError<p></td>
                 </tr>
                 <tr>
                     <td><label>Фото: </label></td>
-                    <td><input type="file" th:name="file"
-                               required aria-required="true"/></td>
+                    <td><input type="file" th:name="file"/></td>
                 </tr>
                 <tr>
-                    <td><button type="submit">Add</button></td>
+                    <td><button type="submit">Создать</button></td>
+                </tr>
+                <tr class="back">
+                    <td><a href="/poster" class="btn back">Назад</a></td>
                 </tr>
             </table>
         </form>

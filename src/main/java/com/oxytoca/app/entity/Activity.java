@@ -1,11 +1,10 @@
 package com.oxytoca.app.entity;
 
-import com.oxytoca.registration.entity.Role;
-import com.oxytoca.registration.entity.User;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,7 +12,10 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Пожалуйста, заполните поле типа")
     private String type;
+    @NotBlank(message = "Пожалуйста, заполните текстовое поле")
+    @Length(max = 2048)
     private String text;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

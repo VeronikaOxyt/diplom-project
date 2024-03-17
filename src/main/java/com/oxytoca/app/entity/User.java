@@ -1,24 +1,28 @@
-package com.oxytoca.registration.entity;
+package com.oxytoca.app.entity;
 
 import com.oxytoca.app.entity.Activity;
+import com.oxytoca.app.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "users") //usr
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String fullname;
+    @NotBlank(message = "Пожалуйста, заполните поле")
     private String email;
+    @NotBlank(message = "Пожалуйста, заполните поле")
     private String username;
+    @NotBlank(message = "Пожалуйста, заполните поле")
     private String password;
     private boolean active;
     private String activationCode;
@@ -33,6 +37,9 @@ public class User implements UserDetails {
     @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    private Set<Activity> authorsActivities;
 
     public User() {
 
@@ -141,6 +148,14 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public Set<Activity> getAuthorsActivities() {
+        return authorsActivities;
+    }
+
+    public void setAuthorsActivities(Set<Activity> authorsActivities) {
+        this.authorsActivities = authorsActivities;
     }
 
     @Override

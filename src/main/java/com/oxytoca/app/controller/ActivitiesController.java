@@ -1,20 +1,28 @@
 package com.oxytoca.app.controller;
-import com.oxytoca.registration.entity.User;
+import com.oxytoca.app.entity.User;
 import com.oxytoca.app.entity.Activity;
 import com.oxytoca.app.repository.ActivityRepository;
-import com.oxytoca.registration.service.UserService;
+import com.oxytoca.app.service.ActivityService;
+import com.oxytoca.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 public class ActivitiesController {
@@ -22,9 +30,8 @@ public class ActivitiesController {
     private ActivityRepository activityRepository;
     @Autowired
     private UserService userService;
-
-    @Value("${upload.path}")
-    private String uploadPath;
+    @Autowired
+    private ActivityService activityService;
 
     @GetMapping("/")
     public String greeting() {
@@ -38,32 +45,48 @@ public class ActivitiesController {
         return "poster";
     }
 
+    @GetMapping("/authorsActivities")
+    @PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
+    public String authorsActivities(@AuthenticationPrincipal User user,
+                                    Model model) {
+        Iterable<Activity> allActivities = user.getAuthorsActivities();
+        model.addAttribute("allActs", allActivities);
+        model.addAttribute("user", user);
+        return "poster";
+    }
+
+    @GetMapping("/joiningActivities")
+    public String joiningActivities(@AuthenticationPrincipal User user,
+                                    Model model) {
+        System.out.println(user.toString());
+        Iterable<Activity> allActivities = user.getMyActivities();
+        System.out.println(allActivities.toString());
+        model.addAttribute("allActs", allActivities);
+        return "poster";
+    }
+
     @GetMapping("/addNewActivity")
-    public String addActivity(Model model) {
+    @PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
+    public String addNewActivity(Model model) {
         Activity activity = new Activity();
         model.addAttribute("activity", activity);
         return "activity-form";
     }
 
-    @PostMapping(path ="/saveActivity")
-    public String saveActivity(@AuthenticationPrincipal User user,
+    @PostMapping("/saveNewActivity")
+    @PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
+    public String saveNewActivity(@AuthenticationPrincipal User user,
                                @RequestParam("file") MultipartFile file,
-                               @ModelAttribute("activity") Activity activity) throws IOException {
-        if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            String uuidIfFile = UUID.randomUUID().toString();
-            String resultFilename = uuidIfFile + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-            activity.setFilename(resultFilename);
+                               @ModelAttribute("activity") @Valid Activity activity,
+                                BindingResult bindingResult,
+                               Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ValidationController.getErrors(bindingResult);
+            model.addAttribute("errors", errors);
+            return "activity-form";
+        } else {
+            activityService.saveActivity(user, file, activity);
         }
-        activity.setAuthor(user);
-        activityRepository.save(activity);
         return "redirect:/poster";
     }
     @PostMapping("filter")
@@ -78,24 +101,57 @@ public class ActivitiesController {
         return "poster";
     }
 
-
     @GetMapping("join/{activity}")
     public String joinActivity(@AuthenticationPrincipal User user,
                                @PathVariable Activity activity) {
-        System.out.println("user id " + user.getId());
-        System.out.println("activity id " + activity.getId());
         userService.joinActivity(user.getId(), activity);
 
         return "redirect:/poster";
     }
+
     @GetMapping("disjoin/{activity}")
     public String disjoinActivity(@AuthenticationPrincipal User user,
                                @PathVariable Activity activity) {
-        System.out.println("user id " + user.getId());
-        System.out.println("activity id " + activity.getId());
-        userService.disjoinActivity(user.getId(), activity);
+        userService.disjoinActivity(user.getId(), activity.getId());
 
         return "redirect:/poster";
     }
 
+    @GetMapping("/activity/{activity}")
+    @PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
+    public String editActivity(@PathVariable Activity activity,
+                               @AuthenticationPrincipal User user,
+                               Model model) {
+        if(Objects.equals(user.getId(), activity.getAuthor().getId())) {
+            model.addAttribute("activity", activity);
+            return "activity-edit";
+        }
+        return "poster";
+    }
+
+    @PostMapping("/activity/saveEditActivity")
+    @PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
+    public String saveEditActivity(
+            @AuthenticationPrincipal User user,
+            @RequestParam String type,
+            @RequestParam String text,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("id") Activity activity) throws IOException {
+        if(Objects.equals(user.getId(), activity.getAuthor().getId())) {
+            activityService.saveEditActivity(type, text,
+                    file, activity);
+        }
+        return "redirect:/authorsActivities";
+    }
+
+    @GetMapping("/delete/{activity}")
+    @PreAuthorize("hasRole('ROLE_REFEREE') || hasRole('ROLE_INSTRUCTOR')")
+    public String deleteActivity(
+            @AuthenticationPrincipal User user,
+            @PathVariable Activity activity) throws IOException {
+        if(Objects.equals(user.getId(), activity.getAuthor().getId())) {
+            activityRepository.delete(activity);
+        }
+        return "redirect:/authorsActivities";
+    }
 }
