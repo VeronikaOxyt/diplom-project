@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/style/css/activity.css">
+    <script src="https://api-maps.yandex.ru/2.1/?load=Geolink&amp;lang=ru_RU&amp;apikey=" type="text/javascript"></script>
     <title>Title</title>
+    <style>
+        span.ymaps-2-1-79-geolink-processed {
+            display: inline;
+            position: absolute;
+            margin: 15px;
+        }
+    </style>
 </head>
 <body>
 <header>
     <div th:insert="parts/layout :: navbar"></div>
 </header>
     <main>
-        <div class="card" th:object="${user}" th:each="activity: ${allActs}">
-            <div class="admin" th:if="${user == activity.author}">
+        <div class="card" th:object="${userId}" th:each="activity: ${allActs}">
+            <div class="admin" th:if="${userId == activity.author.id}">
                 <a th:href="@{/activity/{id}(id=${activity.id})}">
                     <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
                 </a>
@@ -20,18 +28,22 @@
                     <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
                 </a>
             </div>
-            <div class="data">
+            <div class="data" th:object="${formatterOutput}">
                 <div class="img">
                     <img th:src="@{/img/{filename}(filename = ${activity.filename})}">
                 </div>
-
-                <p th:text="${activity.authorName}">authorName</p>
+                <p th:text="'Автор: ' + ${activity.authorName}">authorName</p>
                 <p th:text="${activity.type}">type</p>
                 <p th:text="${activity.text}">text</p>
+                <p th:text="${activity.startDateTime.format(formatterOutput)}">start</p>
+                <p th:text="${activity.finishDateTime.format(formatterOutput)}">finish</p>
+                <p>
+                    <span class="ymaps-geolink" th:text="${activity.location}">location</span>
+                </p>
             </div>
             <hr>
             <div class="join">
-                <p th:text="${activity.participants.size()}">size <p><i class="fa fa-user" aria-hidden="true"></i></p></p>
+                <p th:text="${activity.participants.size()}">size <p><i class="fa fa-user" aria-hidden="true"></i></p>
                 <a th:href="@{/join/{id}(id=${activity.id})}">Join <i class="fa fa-user-plus" aria-hidden="true"></i></a>
                 <a th:href="@{/disjoin/{id}(id=${activity.id})}">Leave <i class="fa fa-user-times" aria-hidden="true"></i></a>
             </div>

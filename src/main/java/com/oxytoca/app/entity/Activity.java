@@ -1,9 +1,11 @@
 package com.oxytoca.app.entity;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,12 +29,33 @@ public class Activity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> participants = new HashSet<>();
 
+    private String location;
+
+    @DateTimeFormat
+    @Column(name = "start_date_time")
+    private LocalDateTime startDateTime;
+
+    @DateTimeFormat
+    @Column(name = "finish_date_time")
+    private LocalDateTime finishDateTime;
+
+    @Transient
+    private String start;
+
+    @Transient
+    private String finish;
+
+
     public Activity() {}
 
-    public Activity(String type, String text, User author) {
+    public Activity(String type, String text, User author, String location,
+                    LocalDateTime startDateTime, LocalDateTime finishDateTime) {
         this.type = type;
         this.text = text;
         this.author = author;
+        this.location = location;
+        this.startDateTime = startDateTime;
+        this.finishDateTime = finishDateTime;
     }
 
     public String getAuthorName() {
@@ -86,6 +109,46 @@ public class Activity {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getFinishDateTime() {
+        return finishDateTime;
+    }
+
+    public void setFinishDateTime(LocalDateTime finishDateTime) {
+        this.finishDateTime = finishDateTime;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getFinish() {
+        return finish;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
     }
 
     @Override

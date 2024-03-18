@@ -10,11 +10,12 @@ body {
 h2 {
     font-family: sans-serif;
     color: #3a414a;
-    padding-top: 20px;
-    margin: 20px;
+    padding-top: 10px;
+    margin: 10px;
 }
 
 form {
+    margin-top: 60px;
     width: 420px;
     border-radius: 15px;
     background-color:white;

@@ -14,22 +14,37 @@
                 <tr>
                     <td><label>Tип мероприятия: </label></td>
                     <td><select name="type" id="type-select">
-                        <option value="tournament"
+                        <option name="tournament" value="Турнир"
                                 sec:authorize="hasRole('ROLE_REFEREE')">Турнир</option>
-                        <option value="departure"
+                        <option name="departure" value="Выезд"
                                 sec:authorize="hasRole('ROLE_INSTRUCTOR')">Выезд</option>
-                        <option value="master-class">Мастер-класс</option>
+                        <option name="master-class"
+                                value="Мастер-класс">Мастер-класс</option>
                     </select></td>
                 </tr>
                 <tr class="error" th:if="${errors != null}">
                     <td><p th:text="${errors.get('typeError')}">typeError</p></td>
                 </tr>
                 <tr>
-                    <td><label>TEXT: </label></td>
+                    <td><label>Текст: </label></td>
                     <td><input type="text" th:name="text" th:value="${activity.text}"/></td>
                 </tr>
                 <tr class="error" th:if="${errors != null}">
                     <td><p th:text="${errors.get('textError')}">textError<p></td>
+                </tr>
+                <tr>
+                    <td><label>Место проведения: </label></td>
+                    <td><input type="text" th:name="location" th:value="${activity.location}"/></td>
+                </tr>
+                <tr>
+                    <td><label for="datetime">Дата и время начала:</label></td>
+                    <td><input type="datetime-local" th:field="*{start}"
+                               id="datetime" name="start"></td>
+                </tr>
+                <tr>
+                    <td><label for="datetime">Дата и время окончания:</label></td>
+                    <td><input type="datetime-local" th:field="*{finish}"
+                               id="datetime-finish" name="finish"></td>
                 </tr>
                 <tr>
                     <td><label>Фото: </label></td>

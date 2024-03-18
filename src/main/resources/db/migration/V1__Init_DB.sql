@@ -5,6 +5,9 @@ create table activity (
     filename varchar(255),
     text varchar(2048) not null,
     type varchar(255) not null,
+    location varchar(255) not null,
+    start_date_time TIMESTAMP,
+    finish_date_time TIMESTAMP,
     user_id int8,
     primary key (id)
 );

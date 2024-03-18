@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findUserById(userId);
         user.getMyActivities().add(activity);
         userRepository.save(user);
-        sendJoinNotice(activity.getAuthor());
+        //sendJoinNotice(activity.getAuthor());
     }
     @Transactional
     public void disjoinActivity(Long userId, Long activityId) {

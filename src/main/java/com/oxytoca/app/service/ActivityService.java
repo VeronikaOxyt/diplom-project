@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -45,6 +47,11 @@ public class ActivityService {
     public void saveActivity(User user, MultipartFile file, Activity activity) throws IOException {
         saveActivityImg(file, activity);
         activity.setAuthor(user);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        activity.setStartDateTime(LocalDateTime.parse(activity.getStart(), formatter));
+        activity.setFinishDateTime(LocalDateTime.parse(activity.getFinish(), formatter));
+
         activityRepository.save(activity);
     }
 
