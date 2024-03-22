@@ -26,13 +26,13 @@ diplomdb (для работы приложения) и diplomdbtest (для те
 <h3>Проект можно запускать</h3>
 Автоматически создадутся два администратора с ролями ROLE_REFEREE и ROLE_INSTRUCTOR
 Их данные для авторизации:
-
+<hr>
 login: Referee
-<hr>
+
 password: 456
-
-login: Instructor
 <hr>
-password: 789
+login: Instructor
 
+password: 789
+<hr>
 При дальнейшей регистрации пользователей они будут создаваться только с ролью ROLE_USER
