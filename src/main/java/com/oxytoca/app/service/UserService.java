@@ -18,31 +18,51 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.UUID;
 
+/**
+ * Класс предоставляющий бизнес-логику и общий функционал по работе с объектами класса пользователя.
+ */
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ActivityRepository activityRepository;
+    private final ActivityRepository activityRepository;
 
-    @Autowired
+    final
     MailSendingService mailSendingService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
+    public UserService(UserRepository userRepository, ActivityRepository activityRepository, MailSendingService mailSendingService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.activityRepository = activityRepository;
+        this.mailSendingService = mailSendingService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * Метод поиска пользователя по имени пользователя.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
+
+    /**
+     * Метод, реализующий подписку на мероприятие (добавление в БД информации о подписке)
+     */
     @Transactional
     public void joinActivity(Long userId, Activity activity) {
         User user = userRepository.findUserById(userId);
         user.getMyActivities().add(activity);
         userRepository.save(user);
-        //sendJoinNotice(activity.getAuthor());
+        if(activity.getAuthor().getEmail() != null) {
+            sendJoinNotice(activity.getAuthor());
+        }
     }
+
+    /**
+     * Метод, реализующий отписку от мероприятия (удаление из БД информации о подписке)
+     */
     @Transactional
     public void disjoinActivity(Long userId, Long activityId) {
         User user = userRepository.findUserById(userId);
@@ -54,9 +74,14 @@ public class UserService implements UserDetailsService {
 
         activity.getParticipants().remove(user);
         activityRepository.save(activity);
-        //sendDisjoinNotice(activity.getAuthor());
+        if(activity.getAuthor().getEmail() != null) {
+            sendDisjoinNotice(activity.getAuthor());
+        }
     }
 
+    /**
+     * Метод добавления в БД нового пользователя при регистрации
+     */
     public boolean addNewUser(User user) {
         User userFromDatabase =
                 userRepository.findByUsername(user.getUsername());
@@ -73,11 +98,14 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-
-    private void sendJoinNotice(User user) {
+    /**
+     * Метод, посылающий email-сообщение создателю мероприятия
+     * о подписке на него нового пользователя
+     */
+    void sendJoinNotice(User user) {
         if (!user.getEmail().isEmpty()) {
             String message = String.format("Привет, %s! \n" +
-                            "Еще один пользователь записался на твое мероприятие" +
+                            "Еще один пользователь записался на твое мероприятие! \n" +
                             "К списку твоих мероприятий: " +
                             "http://localhost:8080/authorsActivities",
                     user.getUsername());
@@ -87,20 +115,27 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    private void sendDisjoinNotice(User user) {
+    /**
+     * Метод, посылающий email-сообщение создателю мероприятия
+     * об отписке от него пользователя
+     */
+    void sendDisjoinNotice(User user) {
         if (!user.getEmail().isEmpty()) {
             String message = String.format("Привет, %s! \n" +
-                            "Один из пользователей отписался от твоего мероприятия" +
+                            "Один из пользователей отписался от твоего мероприятия! \n" +
                             "К списку твоих мероприятий: " +
                             "http://localhost:8080/authorsActivities",
                     user.getUsername());
 
             mailSendingService.sendMail(user.getEmail(),
-                    "Join to the activity", message);
+                    "Disjoin to the activity", message);
         }
     }
 
-
+    /**
+     * Метод, обновляющий в БД информацию о пользователе
+     * в результате редактирования профиля
+     */
     public void updateProfile(User user, String email,
                               String username, String password) {
         String userEmail = user.getEmail();

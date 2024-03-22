@@ -3,8 +3,6 @@ package com.oxytoca.app.service;
 import com.oxytoca.app.entity.Activity;
 import com.oxytoca.app.entity.User;
 import com.oxytoca.app.repository.ActivityRepository;
-import com.oxytoca.app.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,18 +15,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Класс предоставляющий бизнес-логику и общий функционал по работе с объектами класса мероприятий.
+ */
 @Service
 public class ActivityService {
-    @Autowired
-    private ActivityRepository activityRepository;
+    private final ActivityRepository activityRepository;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Value("${upload.path}")
     private String uploadPath;
 
-    private void saveActivityImg(MultipartFile file, Activity activity) throws IOException {
+    public ActivityService(ActivityRepository activityRepository, UserService userService) {
+        this.activityRepository = activityRepository;
+        this.userService = userService;
+    }
+
+    /**
+     * Метод, сохраняющий в БД информацию о файле изображения
+     * добавленном к мероприятиюю
+     */
+    void saveActivityImg(MultipartFile file, Activity activity) throws IOException {
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             File uploadDir = new File(uploadPath);
 
@@ -44,10 +52,12 @@ public class ActivityService {
         }
     }
 
+    /**
+     * Метод, сохранющий в БД информацию о созданном мероприятии
+     */
     public void saveActivity(User user, MultipartFile file, Activity activity) throws IOException {
         saveActivityImg(file, activity);
         activity.setAuthor(user);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         activity.setStartDateTime(LocalDateTime.parse(activity.getStart(), formatter));
         activity.setFinishDateTime(LocalDateTime.parse(activity.getFinish(), formatter));
@@ -55,6 +65,9 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
+    /**
+     * Метод, сохранющий в БД информацию об отредактированном мероприятии
+     */
     public void saveEditActivity(String type, String text,
                                  MultipartFile file, Activity activity) throws IOException {
         saveActivityImg(file, activity);
@@ -63,6 +76,9 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
+    /**
+     * Метод, удаляющий всю из БД информацию о  мероприятии (фактически удаление мероприятия)
+     */
     @Transactional
     public void deleteActivity(Activity activity) {
         if (!activity.getParticipants().isEmpty()) {
@@ -73,4 +89,7 @@ public class ActivityService {
         activityRepository.delete(activity);
     }
 
+    public String getUploadPath() {
+        return uploadPath;
+    }
 }

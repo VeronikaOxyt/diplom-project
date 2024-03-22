@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/static/style/css/activity.css">
-    <script src="https://api-maps.yandex.ru/2.1/?load=Geolink&amp;lang=ru_RU&amp;apikey=" type="text/javascript"></script>
+    <link rel="stylesheet" href="/static/style/css/activity.css"/>
+    <script src="https://api-maps.yandex.ru/2.1/?load=Geolink&amp;lang=ru_RU&amp;apikey=ENTER_API_KEY" type="text/javascript"></script>
     <title>Title</title>
     <style>
         span.ymaps-2-1-79-geolink-processed {
@@ -18,8 +18,9 @@
 <header>
     <div th:insert="parts/layout :: navbar"></div>
 </header>
-    <main>
-        <div class="card" th:object="${userId}" th:each="activity: ${allActs}">
+    <main id="activity-list">
+        <div class="card" th:data-id="${activity.id}" th:object="${allActs}"
+             th:each="activity: ${allActs}">
             <div class="admin" th:if="${userId == activity.author.id}">
                 <a th:href="@{/activity/{id}(id=${activity.id})}">
                     <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
@@ -30,7 +31,7 @@
             </div>
             <div class="data" th:object="${formatterOutput}">
                 <div class="img">
-                    <img th:src="@{/img/{filename}(filename = ${activity.filename})}">
+                    <img th:src="@{/img/{filename}(filename = ${activity.filename})}"/>
                 </div>
                 <p th:text="'Автор: ' + ${activity.authorName}">authorName</p>
                 <p th:text="${activity.type}">type</p>
@@ -41,10 +42,15 @@
                     <span class="ymaps-geolink" th:text="${activity.location}">location</span>
                 </p>
             </div>
-            <hr>
+            <hr/>
             <div class="join">
-                <p th:text="${activity.participants.size()}">size <p><i class="fa fa-user" aria-hidden="true"></i></p>
-                <a th:href="@{/join/{id}(id=${activity.id})}">Join <i class="fa fa-user-plus" aria-hidden="true"></i></a>
+                <p><a class="first" th:href="@{/activityParticipants/{id}(id=${activity.id})}"
+                   th:text="${activity.participants.size()}">size</a>
+                    <a class="first" th:href="@{/activityParticipants/{id}(id=${activity.id})}">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </a>
+                </p>
+                <a th:href="@{/join/{id}(id = ${activity.id})}">Join <i class="fa fa-user-plus" aria-hidden="true"></i></a>
                 <a th:href="@{/disjoin/{id}(id=${activity.id})}">Leave <i class="fa fa-user-times" aria-hidden="true"></i></a>
             </div>
         </div>

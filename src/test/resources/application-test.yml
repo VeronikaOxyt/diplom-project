@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/diplomdbtest
+    username: oxyt
+    password: 123
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  mail:
+    host: smtp.yandex.ru
+    username: veronikamenshina@yandex.ru
+    password:
+    port: 465
+    protocol: smtps
+
+mail:
+  debug: true
+
+upload:
+  path: /C:/Users/nikki/Documents/uploads

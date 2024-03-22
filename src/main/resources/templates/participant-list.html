@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/style/css/activity.css"/>
+    <link rel="stylesheet" href="/static/style/css/list.css"/>
+    <title>Title</title>
+</head>
+<body>
+    <header>
+        <div th:insert="parts/layout :: navbar"></div>
+    </header>
+    <main>
+        <p>Список участников</p>
+        <table class="list" th:object="${activity}" th:each="participant: ${activity.participants}">
+            <tr>
+                <td><i class="fa fa-user" aria-hidden="true"></i></td>
+                <td><p th:text="${participant.fullname}">fullname</p></td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>

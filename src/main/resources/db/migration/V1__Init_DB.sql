@@ -1,4 +1,4 @@
-create sequence hibernate_sequence start 2 increment 1;
+create sequence hibernate_sequence start 10 increment 1;
 
 create table activity (
     id int8 not null,

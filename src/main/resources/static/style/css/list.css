@@ -1,0 +1,18 @@
+main {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+table {
+    border-top: 1px solid #b0aeae;
+}
+tr {
+    font-size: large;
+}
+p {
+    font-size: x-large;
+    margin: 20px;
+}
+td p {
+    margin: 20px;
+}

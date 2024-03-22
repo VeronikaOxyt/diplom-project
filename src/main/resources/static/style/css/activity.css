@@ -14,7 +14,7 @@ header {
     padding: 1.1rem 5rem;
     background-color: #6aa1ea;
 }
-.brand a {
+.brand p {
     padding: 8px;
     font-weight: lighter;
     text-transform: uppercase;
@@ -52,7 +52,6 @@ input.search {
     border: none;
     border-radius: 10px;
     text-decoration: none;
-    text-transform: uppercase;
 }
 button.search {
     background-color: #6aa1ea;
@@ -159,6 +158,12 @@ div.join a {
     color: rgba(79, 82, 87, 0.87);
     padding-left: 20px;
     border-left: solid 1px #c8cbcc;
+}
+div.join a.first {
+    text-decoration: none;
+    color: rgba(79, 82, 87, 0.87);
+    padding-left: 20px;
+    border-left: none;
 }
 div.join a:hover {
     color: #3a414a;

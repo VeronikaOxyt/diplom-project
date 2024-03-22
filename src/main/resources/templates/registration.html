@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="/static/style/css/form.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style/css/form.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Spring Security Example </title>
 </head>
 <body>
 <form th:action="@{/addNewUser}" th:object="${user}"
       method="post" modelAttribute="${user}">
-    <h2>Регистрация</h2>
+    <h2 class="reg">Регистрация</h2>
     <table>
         <tr>
             <td><label>Fullname: </label></td>

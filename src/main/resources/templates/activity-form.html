@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/style/css/form.css">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/static/style/css/form.css"/>
     <title>Title</title>
 </head>
 <body>
@@ -22,15 +22,9 @@
                                 value="Мастер-класс">Мастер-класс</option>
                     </select></td>
                 </tr>
-                <tr class="error" th:if="${errors != null}">
-                    <td><p th:text="${errors.get('typeError')}">typeError</p></td>
-                </tr>
                 <tr>
                     <td><label>Текст: </label></td>
                     <td><input type="text" th:name="text" th:value="${activity.text}"/></td>
-                </tr>
-                <tr class="error" th:if="${errors != null}">
-                    <td><p th:text="${errors.get('textError')}">textError<p></td>
                 </tr>
                 <tr>
                     <td><label>Место проведения: </label></td>
@@ -39,22 +33,25 @@
                 <tr>
                     <td><label for="datetime">Дата и время начала:</label></td>
                     <td><input type="datetime-local" th:field="*{start}"
-                               id="datetime" name="start"></td>
+                               id="datetime" name="start"/></td>
                 </tr>
                 <tr>
                     <td><label for="datetime">Дата и время окончания:</label></td>
                     <td><input type="datetime-local" th:field="*{finish}"
-                               id="datetime-finish" name="finish"></td>
+                               id="datetime-finish" name="finish"/></td>
                 </tr>
                 <tr>
                     <td><label>Фото: </label></td>
                     <td><input type="file" th:name="file"/></td>
                 </tr>
+                <tr class="error" th:if="${errors != null}">
+                    <td><p th:text="${'Заполните необходимые поля'}">typeError</p></td>
+                </tr>
                 <tr>
                     <td><button type="submit">Создать</button></td>
                 </tr>
                 <tr class="back">
-                    <td><a href="/poster" class="btn back">Назад</a></td>
+                    <td><a href="/activitiesPoster" class="btn back">Назад</a></td>
                 </tr>
             </table>
         </form>

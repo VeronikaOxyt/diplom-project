@@ -7,7 +7,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
-
+/**
+ * Конфигурация для настройки бина JavaMailSender.
+ */
 @Configuration
 public class MailConfig {
     @Value("${spring.mail.host}")
@@ -27,6 +29,14 @@ public class MailConfig {
 
     @Value("${mail.debug}")
     private String debug;
+
+    /**
+     * Создает и возвращает бин JavaMailSender для отправки
+     * электронной почты из Java-приложений по  SMTP-протоколу
+     * (JavaMail API).
+     * @return Бин JavaMailSender.
+     */
+
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();

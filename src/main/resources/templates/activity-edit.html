@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/style/css/form.css">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/static/style/css/form.css"/>
     <title>Title</title>
 </head>
 <body>
 <main>
-    <form th:action="@{/activity/saveEditActivity}" METHOD="post"
+    <form th:action="@{/activity/saveEditActivity/{id}(id=${activity.id})}" METHOD="post"
           enctype="multipart/form-data">
         <h2>Input activity</h2>
-        <input type="hidden" th:name="id" th:value="${activity.id}">
+        <input type="hidden" th:name="id" th:value="${activity.id}"/>
         <table>
             <tr>
                 <td><label>Тип мероприятия: </label></td>
@@ -24,11 +24,14 @@
                 <td><label>Фото: </label></td>
                 <td><input type="file" th:name="file"/></td>
             </tr>
+            <tr class="error" th:if="${errors != null}">
+                <td><p th:text="${'Заполните необходимые поля'}">typeError</p></td>
+            </tr>
             <tr>
                 <td><button type="submit">Сохранить</button></td>
             </tr>
             <tr class="back">
-                <td><a href="/poster" class="btn back">Назад</a></td>
+                <td><a href="/activitiesPoster" class="btn back">Назад</a></td>
             </tr>
         </table>
     </form>

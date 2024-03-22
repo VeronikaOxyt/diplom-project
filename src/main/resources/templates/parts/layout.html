@@ -2,17 +2,17 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <script src="https://kit.fontawesome.com/b56e379ce1.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/static/style/css/activity.css">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style/css/activity.css"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
     <div th:fragment="navbar">
-        <div class="brand"><a href="#">Доска мероприятий</a></div>
+        <div class="brand"><p>Доска мероприятий</p></div>
         <nav class="navbar">
             <ul>
                 <li><form method="post" th:action="@{filter}">
-                    <input class="search" type="text" th:name="type">
+                    <input class="search" type="text" th:name="text"/>
                     <button class="search" type="submit">
                         <i class="fa fa-search" aria-hidden="true"></i></button>
                 </form></li>
@@ -20,7 +20,7 @@
                        sec:authorize="hasRole('ROLE_REFEREE')">Создать</a></li>
                 <li><a href="/addNewActivity"
                        sec:authorize="hasRole('ROLE_INSTRUCTOR')">Создать</a></li>
-                <li><a href="/poster">Мероприятия</a></li>
+                <li><a href="/activitiesPoster">Мероприятия</a></li>
                 <li><a href="/profile">Профиль</a></li>
                 <li><a href="/authorsActivities"
                        sec:authorize="hasRole('ROLE_REFEREE')">Провожу</a></li>

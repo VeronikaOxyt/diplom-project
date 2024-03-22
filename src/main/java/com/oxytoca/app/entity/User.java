@@ -1,7 +1,5 @@
 package com.oxytoca.app.entity;
 
-import com.oxytoca.app.entity.Activity;
-import com.oxytoca.app.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +9,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Entity-класс пользователя.
+ */
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -48,6 +49,19 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
     }
+
+    public User(Long id, String username,
+                String password, Set<Role> roles,
+                Set<Activity> authorsActivities,
+                boolean active) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.authorsActivities = authorsActivities;
+        this.active = active;
+    }
+
     public Long getId() {
         return id;
     }
@@ -142,13 +156,6 @@ public class User implements UserDetails {
         activity.getParticipants().remove(this);
     }
 
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
 
     public Set<Activity> getAuthorsActivities() {
         return authorsActivities;

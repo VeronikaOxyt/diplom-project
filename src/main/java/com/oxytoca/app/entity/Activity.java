@@ -9,6 +9,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Entity-класс мероприятия.
+ */
+
 @Entity
 public class Activity {
     @Id
@@ -22,6 +26,7 @@ public class Activity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
+
     private String filename;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "activity_participant",
@@ -29,6 +34,7 @@ public class Activity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> participants = new HashSet<>();
 
+    @NotBlank
     private String location;
 
     @DateTimeFormat
@@ -48,14 +54,11 @@ public class Activity {
 
     public Activity() {}
 
-    public Activity(String type, String text, User author, String location,
-                    LocalDateTime startDateTime, LocalDateTime finishDateTime) {
+    public Activity(Long id, String type, String text, String location) {
+        this.id = id;
         this.type = type;
         this.text = text;
-        this.author = author;
         this.location = location;
-        this.startDateTime = startDateTime;
-        this.finishDateTime = finishDateTime;
     }
 
     public String getAuthorName() {
@@ -150,6 +153,8 @@ public class Activity {
     public void setFinish(String finish) {
         this.finish = finish;
     }
+
+
 
     @Override
     public String toString() {
