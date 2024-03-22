@@ -28,9 +28,11 @@ diplomdb (для работы приложения) и diplomdbtest (для те
 Их данные для авторизации:
 
 login: Referee
+<hr>
 password: 456
 
 login: Instructor
+<hr>
 password: 789
 
 При дальнейшей регистрации пользователей они будут создаваться только с ролью ROLE_USER
